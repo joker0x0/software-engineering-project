@@ -1,4 +1,4 @@
-const CustomerModel = require("../models/productModel")
+const productModel = require("../models/productModel")
 
 const DeleteFromCart = async (req, res) => {
   try {
