@@ -2,6 +2,6 @@ const { AddToCart, DeleteFromCart , EditCart} = require("../controllers/productC
 const router = require("express").Router()
 const { auth ,Roles } = require("../middlewares/authMiddleware");
 
-router.post("/addProduct",auth([Roles.user]),AddToCart)
+router.post("/addToCart",auth([Roles.user]),AddToCart)
 router.delete("/deleteProduct",auth([Roles.user]),DeleteFromCart)
-router.patch("/editProduct",auth([Roles.user]),EditCart)
+router.patch("/editCart",auth([Roles.user]),EditCart)
