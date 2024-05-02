@@ -1,7 +1,24 @@
 const productModel = require("../models/productModel")
 
 const addProduct = async (req,res)=>{
-    
+    const {name, description, stock, price, color, yearOfmodel, image} = req.body
+
+    const response = await productModel.find(name)
+
+    if(response){
+        
+        return res.status(400).json("Already Existing")
+    } else {
+        const newProduct = new productModel({name, description, stock, price, color, yearOfmodel, image})
+        await newProduct.save((err)=>{
+            if (err){
+                return res.status(500).json("Couldn't save product")
+            }else{
+                return res.status(200).json("Product Added")
+            }
+        })
+        
+    }
 }
 const deleteProduct = async(req,res)=>{
 
