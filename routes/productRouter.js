@@ -9,8 +9,8 @@ router.delete('/removeProduct',auth([Roles.Admin]), deleteProduct);
 //router.post('/editProduct', auth(), updateProduct);
 
 
-router.post("/deleteProduct",auth([Roles.Admin]),deleteProduct)
-router.patch("/editProduct",auth([Roles.Admin]),updateProduct)
+//router.post("/deleteProduct",auth([Roles.Admin]),deleteProduct)
+//router.patch("/editProduct",auth([Roles.Admin]),updateProduct)
 router.get('/showProduct',auth([Roles.Admin]), showProduct)
 
 
