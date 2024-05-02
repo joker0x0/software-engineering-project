@@ -2,17 +2,9 @@ const { addProduct, deleteProduct , updateProduct } = require("../controllers/pr
 const router = require("express").Router()
 const { auth ,Roles } = require("../middlewares/authMiddleware");
 
-
-
-
-
-
-
 router.post("/addProduct",auth([Roles.Admin]),addProduct)
-
-
-//router.post('/removeProduct',auth(), deleteProduct);
-//router.post('/editProduct', auth(), updateProduct);
+router.post("/deleteProduct",auth([Roles.Admin]),deleteProduct)
+router.post("/editProduct",auth([Roles.Admin]),updateProduct)
 
 
 
