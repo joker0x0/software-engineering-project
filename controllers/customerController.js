@@ -1,18 +1,18 @@
-const CustomerModel = require("../models/productModel")
+const productModel = require("../models/productModel");
 
-const DeleteFromCart = async (req, res) => {
-  try {
-      const productId = req.params.id;
-
-      await productModel.findByIdAndRemove(productId);
-
-      console.log('Product deleted from cart:', productId);
-      res.status(200).json({ message: 'Product deleted from cart successfully' });
-
-  } catch (error) {
-      console.error('Error deleting item from cart:', error);
-      res.status(500).json({ error: 'Internal server error' });
-  }
+const trackOrder = async(req , res) =>{
+    try{
+       const foundProduct = await productModel.find(); //finds target product
+       res.status(200).json(foundProduct); //checks product
+       if(!foundProduct)
+        return res.status(404).json({message: 'Product not found'});
+       else
+        res.status(200).json({message: 'Tracking Product...'}); 
+    }
+    catch(error){
+        console.error('Cannot track product' , error);
+        res.status(500).json({message:'Internal Server Error'});
+    }
 };
 
 const EditCart = async (req, res) => {
@@ -45,3 +45,9 @@ const EditCart = async (req, res) => {
       res.status(500).json({ error: 'Internal server error' });
   }
 };
+
+module.exports = {
+    AddToCart,
+    DeleteFromCart,
+    EditCart
+}
