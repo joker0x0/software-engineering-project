@@ -14,9 +14,6 @@ app.use(express.json());
 app.use("/api/v2",router)
 app.use("/api/v2",productRouter)
 
-app.get('/' , (req, res) => {
-  res.render('index')
-})
 
 mongoose.connect(process.env.dbURI, { useNewUrlParser: true, useUnifiedTopology: true})
   .then((result) => {
