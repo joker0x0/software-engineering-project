@@ -1,5 +1,22 @@
 const productModel = require("../models/productModel")
 
+const AddToCart = async (req, res) => {
+    try {
+        const product = req.body;
+  
+        if (!product.stock) {
+            return res.status(404).json({ error: 'This product is out of stock' });
+        }
+  
+        console.log('Product added to cart:', product);
+  
+        res.status(200).json({ message: 'Product added to cart successfully' });
+    } catch (error) {
+        console.error('Error adding product to cart:', error);
+        res.status(500).json({ error: 'Internal server error' });
+    }
+  };
+  
 const DeleteFromCart = async (req, res) => {
   try {
       const productId = req.params.id;
