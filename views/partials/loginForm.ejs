@@ -1,0 +1,42 @@
+
+<form  onsubmit="submitForm(event)"  class="register-form">
+    <div id="pgMsg"></div>
+    <h2>Login</h2>
+    <input type="email" placeholder="email" name="email" required>
+    <input type="password" placeholder="Password" name="password"  required>
+    <button type="submit">Login</button>
+</form>
+
+<script>
+     const responseMessageElement = document.getElementById('pgMsg');
+const submitForm =(event)=>{
+    event.preventDefault();
+    const email = document.querySelector('input[name="email"]');
+    const password = document.querySelector('input[name="password"]');
+    const formData = {
+        email : email.value,
+        password : password.value
+    }
+    fetch("/api/v2/login",{
+        method:"Post",
+        headers:{
+            "Content-Type":"application/json"
+        },
+        body: JSON.stringify(formData)
+    }) //Could change this to a find request to the data base directly like Teacher.find()...
+    .then(res => res.json())
+    .then(res => {
+        responseMessageElement.textContent = res.message;
+        setTimeout(() => {
+                responseMessageElement.textContent = ''; 
+                if(res.message === "login is successfull"){
+            window.location.href = '/';
+        }
+            }, 3000);
+        form.reset();
+    })
+    .catch(err => {
+      console.log(JSON.stringify(err));
+    });
+}
+</script>

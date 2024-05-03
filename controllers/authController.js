@@ -24,7 +24,7 @@ const signUp = async (req,res)=>{
     
         const addedUser =  await newUser.save()
         
-        res.status(200).json({message:"User added",addedUser})
+        res.status(200).json({message:"User added Succefully",addedUser})
     }catch(error){
         console.log('Error',error)
         res.status(500).json({ message: "Internal Server Error" });

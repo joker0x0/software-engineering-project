@@ -1,0 +1,51 @@
+<form id="myForm" onsubmit="submitForm(event)"  class="register-form">
+    <div id="pgMsg"></div>
+    <h2>Register</h2>
+ 
+    <input type="text" placeholder="name" name="name" required>
+    <input type="email" placeholder="email" name="email" required>
+    <input type="password" placeholder="Password" name="password"  required>
+    <button type="submit">Register</button>
+    <p class="switch-form">Already have an account? <a href="/login">Login</a></p>
+</form>
+
+<script>
+      const responseMessageElement = document.getElementById('pgMsg');
+const submitForm =(event)=>{
+    event.preventDefault();
+    const name = document.querySelector('input[name="name"]');
+    const email = document.querySelector('input[name="email"]');
+    const password = document.querySelector('input[name="password"]');
+    const form = document.getElementById('myForm');
+  
+ 
+    const formData = {
+        name : name.value,
+        email : email.value,
+        password : password.value
+    }
+    fetch("/api/v2/signup",{
+        method:"Post",
+        headers:{
+            "Content-Type":"application/json"
+        },
+        body: JSON.stringify(formData)
+    }) //Could change this to a find request to the data base directly like Teacher.find()...
+    .then(res => res.json())
+    .then(res => {
+        responseMessageElement.textContent = res.message;
+        setTimeout(() => {
+                responseMessageElement.textContent = ''; 
+                if(res.message === "User added Succefully"){
+            window.location.href = '/login';
+        }
+            }, 3000);
+        form.reset();
+       
+    })
+    .catch(err => {
+        document.getElementById("pgMsg").innerHTML = err
+    //   console.log(JSON.stringify(err));
+    });
+}
+</script>
