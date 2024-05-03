@@ -1,5 +1,4 @@
 const mongoose = require("mongoose")
-const productModel = require("./productModel")
 
 const userSchema =new mongoose.Schema({
     name: { 
@@ -21,10 +20,9 @@ const userSchema =new mongoose.Schema({
         enum: ['user', 'admin'],
         default: 'user'
       },
-    // cart: [{
-    //         type: productModel
-    //     }]
-
+      cart: [{
+        type: productModel
+    }]
 },{timestamps:true})
 
 const userModel = mongoose.model("user",userSchema)
