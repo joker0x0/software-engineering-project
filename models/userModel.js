@@ -23,6 +23,9 @@ const userSchema =new mongoose.Schema({
       },
       cart: {
         type: {}
+      },
+      orders: {
+        type: {},
       }
 },{timestamps:true})
 
