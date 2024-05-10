@@ -1,9 +1,14 @@
-const { AddToCart, DeleteFromCart , EditCart} = require("../controllers/customerController")
-const router = require("express").Router()
-const { auth ,Roles } = require("../middlewares/authMiddleware");
+const { EditCart } = require('../controllers/customerController');
+const {trackOrder , commitPayment} = require('../product/{id}');
+const router = require("express").Router();
 
-router.post("/addToCart",auth([Roles.user]),AddToCart)
-router.delete("/deleteProduct",auth([Roles.user]),DeleteFromCart)
-router.patch("/editCart",auth([Roles.user]),EditCart)
+
+router.patch("/product/cart/{id}" , EditCart);
+router.get("/user/orders",trackOrder)
+router.post("/cart/pay" , commitPayment);
+router.get("/products",searchProducts);
+router.get("/products",browseProducts);
+router.get("/products/{id}",viewProduct);
+
 
 module.exports = router
