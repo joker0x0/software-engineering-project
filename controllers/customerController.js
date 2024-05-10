@@ -1,5 +1,6 @@
 const productModel = require("../models/productModel");
 const userModel = require("../models/userModel");
+const authMiddleware = require('../middlewares/authMiddleware')
 
 const DeleteFromCart = async (req, res) => {
     try {
@@ -18,15 +19,13 @@ const DeleteFromCart = async (req, res) => {
 
   const AddToCart = async (req, res) => {
     try {
-        const product = req.body;
+        const {id, name, description, stock, price, color, yearOfmodel, image, quantity} = req.body;
+        const product = await productModel.findById(id)
+        const user = await userModel.findById(authMiddleware('user').id)
+        
+        return res.json(user.id)
   
-        if (!product.stock) {
-            return res.status(404).json({ error: 'This product is out of stock' });
-        }
-  
-        console.log('Product added to cart:', product);
-  
-        res.status(200).json({ message: 'Product added to cart successfully' });
+        //res.status(200).json({ message: 'Product added to cart successfully' });
     } catch (error) {
         console.error('Error adding product to cart:', error);
         res.status(500).json({ error: 'Internal server error'});
