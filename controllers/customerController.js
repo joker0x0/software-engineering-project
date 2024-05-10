@@ -1,6 +1,39 @@
 const productModel = require("../models/productModel");
 const userModel = require("../models/userModel");
 
+const DeleteFromCart = async (req, res) => {
+    try {
+        const productId = req.params.id;
+  
+        await productModel.findByIdAndRemove(productId);
+  
+        console.log('Product deleted from cart:', productId);
+        res.status(200).json({ message: 'Product deleted from cart successfully' });
+  
+    } catch (error) {
+        console.error('Error deleting item from cart:', error);
+        res.status(500).json({ error: 'Internal server error' });
+    }
+  };
+
+  const AddToCart = async (req, res) => {
+    try {
+        const product = req.body;
+  
+        if (!product.stock) {
+            return res.status(404).json({ error: 'This product is out of stock' });
+        }
+  
+        console.log('Product added to cart:', product);
+  
+        res.status(200).json({ message: 'Product added to cart successfully' });
+    } catch (error) {
+        console.error('Error adding product to cart:', error);
+        res.status(500).json({ error: 'Internal server error' });
+    }
+  };
+  
+
 const trackOrder = async(req , res) =>{
     try{
         const userId = req.params.userId;
@@ -101,5 +134,5 @@ module.exports = {
     EditCart,
     viewProduct,
     searchProducts,
-    browseProducts
+    browseProducts,
 }
