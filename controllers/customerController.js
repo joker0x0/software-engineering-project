@@ -1,13 +1,16 @@
 const productModel = require("../models/productModel");
+const userModel = require("../models/userModel");
 
 const trackOrder = async(req , res) =>{
     try{
-       const foundProduct = await productModel.find(); //finds target product
-       res.status(200).json(foundProduct); //checks product
-       if(!foundProduct)
-        return res.status(404).json({message: 'Product not found'});
+        const userId = req.params.userId;
+       const trackedOrder = await userModel.find(orders);
+        
+       res.status(200).json(trackedOrder); 
+       if(!userId)
+        return res.status(404).json({message: 'Please Log in to be able to track your orders'});
        else
-        res.status(200).json({message: 'Tracking Product...'}); 
+        res.status(200).json(trackedOrder); 
     }
     catch(error){
         console.error('Cannot track product' , error);
