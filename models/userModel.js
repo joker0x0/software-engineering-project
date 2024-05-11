@@ -24,9 +24,15 @@ const userSchema =new mongoose.Schema({
       cart: {
         type: {}
       },
-      orders: {
-        type: {},
-      }
+      orders: [{
+        id: {
+            type: Number
+        },
+         status: {
+            type: Boolean
+         }
+      }]
+
 },{timestamps:true})
 
 const userModel = mongoose.model("user", userSchema)
