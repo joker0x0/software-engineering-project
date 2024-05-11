@@ -21,9 +21,14 @@ const userSchema =new mongoose.Schema({
         enum: ['user', 'admin'],
         default: 'user'
       },
-      cart: {
-        type: {}
-      },
+      cart: [{
+        id: {
+            type: String,
+        },
+        name: {
+            type: String
+        }
+      }],
       orders: [{
         id: {
             type: Number
