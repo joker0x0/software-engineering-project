@@ -1,58 +1,115 @@
+
 const productModel = require("../models/productModel")
 
 const addProduct = async (req,res)=>{
-    const {name, description, stock, price, color, yearOfmodel, image, quantity} = req.body
-    const product = await productModel.findOne({name, description, stock, price, color, yearOfmodel, image, quantity})
-    
-    if(product) {
-        return res.status(500).json("This product is already in exist")
-    } else {
-        const newProduct = new productModel({name, description, stock, price, color, yearOfmodel, image, quantity})
-        await newProduct.save()
-    }
+    try{
+        const {name,decsription,stock,price,color,yearOfmodel} = req.body
+ 
+        const newProduct = new productModel({
+         name,
+         decsription,
+         stock,
+         price,
+         color,
+         yearOfmodel
+        })
+        const savedProduct = await newProduct.save()
+        res.status(200).json({message:'product added',savedProduct})
+ 
+     }catch(error){
+         res.status(500).json({message:'server error'})
+     }
 }
+
+
 const deleteProduct = async(req,res)=>{
-    const id= req.body.id;
-    //find Index to check if it is in the database or not
-    const Index=await productModel.findById(id);
+    try {
+        const { id } = req.body; 
+        const deletedProduct = await productModel.findByIdAndDelete(id);
+        if (!deletedProduct) {
+            return res.status(404).json({ message: 'Product not found' });
+        }
 
-    if(Index){
-        //remove product from the array
-        await productModel.findByIdAndDelete(id);
-        return res.status(200).json(`Ths Product Is Deleted succesfully`);
+        res.status(200).json({ message: 'Product deleted successfully' });
+
+    } catch (error) {
+       // console.log("Error deleting product:", error);
+        res.status(500).json({ message: 'Server error' });
     }
-    else {
-        return res.status(400).json("product was not found");
-    }
-
-
 }
+
+
 const updateProduct = async(req,res)=>{
-    const {id, name, description, stock, price, color, yearOfmodel, image, quantity} = req.body
-
-    const response = await productModel.findById(id)
-
-    if(response){
-        await productModel.findByIdAndUpdate(id, {$set: {name, description, stock, price, color, yearOfmodel, image, quantity}})
-        return res.status(200).json("Update Successfully")
+try{ 
+    const { id } = req.params;
+    const { name, decsription,stock,price } = req.body;
+    const updateProduct = await productModel.findOneAndUpdate({ _id: id }, { name,decsription,stock,price }, { new: true })
+    console.log(updateProduct);
+    if (updateProduct) {
+        res.json({ message: 'Update Product Succesfully', updateProduct })
     } else {
-        return res.status(400).json("Couldn't update product")
+        res.json({ message: 'in-valid id for product' })
+    }
+}catch(error){
+    //console.log("Error", error);
+    res.status(500).json({ message: 'Server error' });
+}
+}
+
+
+const getProducts = async(req,res)=>{
+    try {
+        const products = await productModel.find();
+        res.status(200).json({messgae:'get Products successfully ',products});
+    } catch (error) {
+       // console.log("Error", error);
+        res.status(500).json({ message: 'Server error' });
     }
 }
 
-const showProduct = async(req, res) => {
-    const response = await productModel.find()
+const getProductById = async (req, res) => {
+    try {
+        const { id } = req.body;
+        const product = await productModel.findById(id);
+        
+        if (!product) {
+            return res.status(404).json({ message: 'Product not found' });
+        }
 
-    if(response) {
-        return res.status(200).json(response)
-    } else {
-        return res.status(400).json("Couldn't Fetch Products")
+        res.status(200).json(product);
+    } catch (error) {
+       // console.error("Error", error);
+        res.status(500).json({ message: 'Server error' });
     }
 }
+const searchProducts = async (req, res) => {
+    try {
+        const key = req.params.key;
+
+        const products = await productModel.find({
+            $or: [
+                { name: { $regex: key, $options: 'i' } }, 
+                { description: { $regex: key, $options: 'i' } },
+                { color: { $regex: key, $options: 'i' } },
+                { yearOfmodel: { $regex: key, $options: 'i' } },
+            ]
+        });
+
+        res.status(200).json(products);
+    } catch (error) {
+       // console.error('Error searching products:', error);
+        res.status(500).json({ message: 'Internal Server Error' });
+    }
+}
+
+
+
 
 module.exports={
- addProduct,
- deleteProduct,
- updateProduct,
- showProduct
+    addProduct,
+    deleteProduct,
+    updateProduct,
+    getProducts,
+    getProductById,
+    searchProducts
 }
