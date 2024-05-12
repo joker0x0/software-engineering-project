@@ -3,6 +3,7 @@ const app = express()
 const mongoose = require('mongoose');
 const router = require("./routes/authRouter")
 const productRouter = require("./routes/productRouter")
+const cartRouter = require('./routes/cartRouter')
 
 require('dotenv').config()
 
@@ -14,6 +15,7 @@ app.use(express.json());
 
 app.use("/api/v2",router)
 app.use("/api/v2",productRouter)
+app.use("/api/v2", cartRouter)
 
 
 // index page

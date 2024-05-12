@@ -1,7 +1,9 @@
-const{addToCart , deleteFromCart}=require("../controller/cartController")
+const{addToCart , deleteFromCart}=require("../controllers/cartController")
 const router = require("express").Router()
-const { auth ,Roles } = require("../middleware/authMiddleware");
+const { auth ,Roles } = require("../middlewares/authMiddleware");
 
 
 router.post('/',auth([Roles.User]) ,addToCart)
-router.get('/cart/:productId',auth([Roles.User]),deleteFromCart)
+router.delete('/cart/:productId',auth([Roles.User]),deleteFromCart)
+
+module.exports = router
