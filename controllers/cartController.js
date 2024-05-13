@@ -1,23 +1,22 @@
 const cartModel = require("../models/cartModel")
 
-
-
 const addToCart = async (req, res) => {
     const { products } = req.body
     const { _id } = req.user
-    const findCart = await findOne({
+    const findCart = await cartModel.findOne({
         model: cartModel,
         filter: { userId: _id }
     })
     // if user enter product to cart first time we create cart for him and add his products list
     if (!findCart) {
-        const cart = await create({
+        const cart = new cartModel({
             model: cartModel,
             data: {
                 userId: _id,
                 products
             }
         })
+        await cart.save()
         return res.status(201).json({ message: "Done", cart })
     }
 
@@ -37,7 +36,7 @@ const addToCart = async (req, res) => {
         }
     }
 
-    await findOneAndUpdate({
+    await cartModel.findOneAndUpdate({
         model: cartModel,
         filter: { userId: _id },
         data: { products: findCart.products },
@@ -52,7 +51,7 @@ const deleteFromCart = async (req, res) => {
     const { _id } = req.user;
     try {
         // Find the user's cart based on their user ID
-        const cart = await findOneAndUpdate({
+        const cart = await cartModel.findOneAndDelete({
             model: cartModel,
             filter: { userId: _id },
         });
@@ -65,7 +64,7 @@ const deleteFromCart = async (req, res) => {
         cart.products = cart.products.filter(product => product.productId !== productId);
 
         // Update the cart in the database with the modified products array
-        await findOneAndUpdate({
+        await cartModel.findOneAndUpdate({
             model: cartModel,
             filter: { userId: _id },
             data: { products: cart.products },
