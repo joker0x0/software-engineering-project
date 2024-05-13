@@ -1,4 +1,5 @@
 const cartModel = require("../models/cartModel")
+const userModel = require("../models/userModel")
 
 const addToCart = async (req, res) => {
     const { products } = req.body
@@ -77,8 +78,27 @@ const deleteFromCart = async (req, res) => {
     }
 }
 
+const commitPayment = async (req, res) => {
+    const { _id } = req.user
+    const {order} = req.body
+    const user = await userModel.findById(_id)
+
+    try {
+        if(!user) {
+            return res.status(400).json({message: "No user found!"})
+        }
+        else {
+            user.updateOne({_id: _id, }, {$set: {orders: user.orders += order}})
+            return res.status(200).json({message: "Updated order"})
+        }
+    } catch (error) {
+        console.log(err)
+    }
+    
+}
+
 module.exports={
     deleteFromCart,
-    addToCart
-    
+    addToCart,
+    commitPayment,
 }
