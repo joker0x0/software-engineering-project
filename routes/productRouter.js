@@ -12,9 +12,9 @@ router.delete('/deleteproduct/:id',auth([Roles.Admin]), deleteProduct);
 router.patch('/updateproducts/:id', auth([Roles.Admin]), updateProduct);
 
 //get
-router.get('/getProducts', auth([Roles.Admin]), getProducts);
-router.get('/getproduct/:id', auth([Roles.Admin]), getProductById);
-router.get("/searchproducts",auth([Roles.User,Roles.Admin]),searchProducts);
+router.get('/getProducts', getProducts);
+router.get('/getproduct/:id', getProductById);
+router.get("/searchproducts", searchProducts);
 
 
 
