@@ -77,7 +77,6 @@ const deleteFromCart = async (req, res) => {
     }
 }
 
-
 module.exports={
     deleteFromCart,
     addToCart

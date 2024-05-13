@@ -36,6 +36,7 @@ const submitForm =(event)=>{
         form.reset();
     })
     .catch(err => {
+      document.getElementById("pgMsg").innerHTML = err
       console.log(JSON.stringify(err));
     });
 }
